@@ -1,0 +1,4335 @@
+# ESMValTool
+# recipe_gmm.yml
+---
+documentation:
+  title: GMM Analysis
+  description: |
+    This recipe extracts the CMIP6 datasets and calculates GMM values.
+
+  authors:
+    - pacal_aytac
+
+  maintainer:
+    - pacal_aytac
+     
+CMIP6_historical: &cmip6_historical
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: BCC-CSM2-MR, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f2, grid: gr, start_year: 1980,  end_year: 2010}
+ - {dataset: CNRM-CM6-1-HR, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f2, grid: gr, start_year: 1980,  end_year: 2010}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f2, grid: gr, start_year: 1980,  end_year: 2010}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gr, start_year: 1980,  end_year: 2010}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gr, start_year: 1980,  end_year: 2010}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gr, start_year: 1980,  end_year: 2010}
+ - {dataset: HadGEM3-GC31-LL, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f3, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: HadGEM3-GC31-MM, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f3, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: IITM-ESM, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: INM-CM4-8, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gr1, start_year: 1980,  end_year: 2010}
+ - {dataset: INM-CM5-0, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gr1, start_year: 1980,  end_year: 2010}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gr, start_year: 1980,  end_year: 2010}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gr, start_year: 1980,  end_year: 2010}
+ - {dataset: MIROC6, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: MIROC-ES2L, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f2, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: MPI-ESM1-2-LR, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: MRI-ESM2-0, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: NESM3, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f2, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: EC-Earth3-CC, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gr, start_year: 1980,  end_year: 2010}
+ - {dataset: FGOALS-g3, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: GFDL-ESM4, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gr1, start_year: 1980,  end_year: 2010}
+ - {dataset: NorESM2-LM, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: NorESM2-MM, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1980,  end_year: 2010}
+ - {dataset: EC-Earth3-AerChem, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gr, start_year: 1980,  end_year: 2010}
+
+CMIP6_ssp126_15: &cmip6_ssp126_15
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2018,  end_year: 2037}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2021,  end_year: 2040}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: [historical, ssp126],  ensemble: r1i1p1f1, grid: gn, start_year: 2013,  end_year: 2032}
+ - {dataset: BCC-CSM2-MR, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2032,  end_year: 2051}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: [historical, ssp126],  ensemble: r1i1p1f1, grid: gn, start_year: 2004,  end_year: 2023}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f2, grid: gr, start_year: 2018,  end_year: 2037}
+ - {dataset: CNRM-CM6-1-HR, project: CMIP6,  mip: day,  exp: [historical, ssp126],  ensemble: r1i1p1f2, grid: gr, start_year: 2008,  end_year: 2027}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f2, grid: gr, start_year: 2038,  end_year: 2057}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: [historical, ssp126],  ensemble: r1i1p1f1, grid: gr, start_year: 2013,  end_year: 2032}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: [historical, ssp126],  ensemble: r1i1p1f1, grid: gr, start_year: 2003,  end_year: 2022}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gr, start_year: 2021,  end_year: 2040}
+ - {dataset: HadGEM3-GC31-LL, project: CMIP6,  mip: day,  exp: [historical, ssp126],  ensemble: r1i1p1f3, grid: gn, start_year: 2012,  end_year: 2031}
+ - {dataset: HadGEM3-GC31-MM, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f3, grid: gn, start_year: 2019,  end_year: 2038}
+ - {dataset: IITM-ESM, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2036,  end_year: 2055}
+ - {dataset: INM-CM4-8, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gr1, start_year: 2041,  end_year: 2060}
+ - {dataset: INM-CM5-0, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gr1, start_year: 2027,  end_year: 2046}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: [historical, ssp126],  ensemble: r1i1p1f1, grid: gr, start_year: 2010,  end_year: 2029}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: [historical, ssp126],  ensemble: r1i1p1f1, grid: gr, start_year: 2005,  end_year: 2024}
+ - {dataset: MIROC6, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2054,  end_year: 2073}
+ - {dataset: MIROC-ES2L, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f2, grid: gn, start_year: 2032,  end_year: 2051}
+ - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2032,  end_year: 2051}
+ - {dataset: MPI-ESM1-2-LR, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2033,  end_year: 2052}
+ - {dataset: MRI-ESM2-0, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2020,  end_year: 2039}
+ - {dataset: NESM3, project: CMIP6,  mip: day,  exp: [historical, ssp126],  ensemble: r1i1p1f1, grid: gn, start_year: 2012,  end_year: 2031}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: [historical, ssp126],  ensemble: r1i1p1f2, grid: gn, start_year: 2014,  end_year: 2033}
+
+CMIP6_ssp126_20: &cmip6_ssp126_20
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2033,  end_year: 2052}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2064,  end_year: 2083}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2041,  end_year: 2060}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2017,  end_year: 2036}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f2, grid: gr, start_year: 2050,  end_year: 2069}
+ - {dataset: CNRM-CM6-1-HR, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f2, grid: gr, start_year: 2021,  end_year: 2040}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gr, start_year: 2034,  end_year: 2053}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gr, start_year: 2020,  end_year: 2039}
+ - {dataset: HadGEM3-GC31-LL, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f3, grid: gn, start_year: 2028,  end_year: 2047}
+ - {dataset: HadGEM3-GC31-MM, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f3, grid: gn, start_year: 2031,  end_year: 2050}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gr, start_year: 2029,  end_year: 2048}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gr, start_year: 2015,  end_year: 2034}
+ - {dataset: NESM3, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f1, grid: gn, start_year: 2040,  end_year: 2059}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: ssp126,  ensemble: r1i1p1f2, grid: gn, start_year: 2027,  end_year: 2046}
+
+CMIP6_ssp245_15: &cmip6_ssp245_15
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2019,  end_year: 2038}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2020,  end_year: 2039}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: [historical, ssp245],  ensemble: r1i1p1f1, grid: gn, start_year: 2011,  end_year: 2030}
+ - {dataset: BCC-CSM2-MR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2026,  end_year: 2045}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: [historical, ssp245],  ensemble: r1i1p1f1, grid: gn, start_year: 2004,  end_year: 2023}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f2, grid: gr, start_year: 2021,  end_year: 2040}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f2, grid: gr, start_year: 2028,  end_year: 2047}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: [historical, ssp245],  ensemble: r1i1p1f1, grid: gr, start_year: 2013,  end_year: 2032}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: [historical, ssp245],  ensemble: r1i1p1f1, grid: gr, start_year: 2001,  end_year: 2020}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2017,  end_year: 2036}
+ - {dataset: HadGEM3-GC31-LL, project: CMIP6,  mip: day,  exp: [historical, ssp245],  ensemble: r1i1p1f3, grid: gn, start_year: 2010,  end_year: 2029}
+ - {dataset: INM-CM4-8, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr1, start_year: 2026,  end_year: 2045}
+ - {dataset: INM-CM5-0, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr1, start_year: 2028,  end_year: 2047}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: [historical, ssp245],  ensemble: r1i1p1f1, grid: gr, start_year: 2009,  end_year: 2028}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: [historical, ssp245],  ensemble: r1i1p1f1, grid: gr, start_year: 2004,  end_year: 2023}
+ - {dataset: MIROC6, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2037,  end_year: 2056}
+ - {dataset: MIROC-ES2L, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f2, grid: gn, start_year: 2032,  end_year: 2051}
+ - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2028,  end_year: 2047}
+ - {dataset: MPI-ESM1-2-LR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2027,  end_year: 2046}
+ - {dataset: MRI-ESM2-0, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2021,  end_year: 2040}
+ - {dataset: NESM3, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2015,  end_year: 2034}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: [historical, ssp245],  ensemble: r1i1p1f2, grid: gn, start_year: 2014,  end_year: 2033}
+ - {dataset: EC-Earth3-CC, project: CMIP6,  mip: day,  exp: [historical, ssp245],  ensemble: r1i1p1f1, grid: gr, start_year: 1998,  end_year: 2017}
+ - {dataset: FGOALS-g3, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2022,  end_year: 2041}
+ - {dataset: GFDL-ESM4, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr1, start_year: 2037,  end_year: 2056}
+ - {dataset: NorESM2-LM, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2046,  end_year: 2065}
+ - {dataset: NorESM2-MM, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2037,  end_year: 2056}
+
+CMIP6_ssp245_20: &cmip6_ssp245_20
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2031,  end_year: 2050}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2036,  end_year: 2055}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2030,  end_year: 2049}
+ - {dataset: BCC-CSM2-MR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2048,  end_year: 2067}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2015,  end_year: 2034}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f2, grid: gr, start_year: 2039,  end_year: 2058}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f2, grid: gr, start_year: 2046,  end_year: 2065}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2035,  end_year: 2054}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2024,  end_year: 2043}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2040,  end_year: 2059}
+ - {dataset: HadGEM3-GC31-LL, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f3, grid: gn, start_year: 2024,  end_year: 2043}
+ - {dataset: INM-CM4-8, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr1, start_year: 2054,  end_year: 2073}
+ - {dataset: INM-CM5-0, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr1, start_year: 2063,  end_year: 2082}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2024,  end_year: 2043}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: [historical, ssp245],  ensemble: r1i1p1f1, grid: gr, start_year: 2014,  end_year: 2033}
+ - {dataset: MIROC6, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2064,  end_year: 2083}
+ - {dataset: MIROC-ES2L, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f2, grid: gn, start_year: 2054,  end_year: 2073}
+ - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2054,  end_year: 2073}
+ - {dataset: MPI-ESM1-2-LR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2048,  end_year: 2067}
+ - {dataset: MRI-ESM2-0, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2040,  end_year: 2059}
+ - {dataset: NESM3, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2033,  end_year: 2052}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f2, grid: gn, start_year: 2025,  end_year: 2044}
+ - {dataset: EC-Earth3-CC, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2026,  end_year: 2045}
+ - {dataset: FGOALS-g3, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2056,  end_year: 2075}
+ - {dataset: GFDL-ESM4, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr1, start_year: 2064,  end_year: 2083}
+ - {dataset: NorESM2-LM, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2076,  end_year: 2095}
+ - {dataset: NorESM2-MM, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2069,  end_year: 2088}
+
+CMIP6_ssp245_30: &cmip6_ssp245_30
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2062,  end_year: 2081}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2040,  end_year: 2059}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f2, grid: gr, start_year: 2075,  end_year: 2094}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f2, grid: gr, start_year: 2079,  end_year: 2098}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2076,  end_year: 2095}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2058,  end_year: 2077}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2081,  end_year: 2100}
+ - {dataset: HadGEM3-GC31-LL, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f3, grid: gn, start_year: 2052,  end_year: 2071}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2056,  end_year: 2075}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2041,  end_year: 2060}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f2, grid: gn, start_year: 2050,  end_year: 2069}
+ - {dataset: EC-Earth3-CC, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gr, start_year: 2064,  end_year: 2083}
+
+CMIP6_ssp245_40: &cmip6_ssp245_40
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f1, grid: gn, start_year: 2074,  end_year: 2093}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: ssp245,  ensemble: r1i1p1f2, grid: gn, start_year: 2081,  end_year: 2100}
+
+CMIP6_ssp370_15: &cmip6_ssp370_15
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2018,  end_year: 2037}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2024,  end_year: 2043}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: [historical, ssp370],  ensemble: r1i1p1f1, grid: gn, start_year: 2013,  end_year: 2032}
+ - {dataset: BCC-CSM2-MR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2023,  end_year: 2042}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: [historical, ssp370],  ensemble: r1i1p1f1, grid: gn, start_year: 2004,  end_year: 2023}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gr, start_year: 2023,  end_year: 2042}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gr, start_year: 2027,  end_year: 2046}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: [historical, ssp370],  ensemble: r1i1p1f1, grid: gr, start_year: 2013,  end_year: 2032}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: [historical, ssp370],  ensemble: r1i1p1f1, grid: gr, start_year: 2002,  end_year: 2021}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2019,  end_year: 2038}
+ - {dataset: INM-CM4-8, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr1, start_year: 2026,  end_year: 2045}
+ - {dataset: INM-CM5-0, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr1, start_year: 2023,  end_year: 2042}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: [historical, ssp370],  ensemble: r1i1p1f1, grid: gr, start_year: 2010,  end_year: 2029}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: [historical, ssp370],  ensemble: r1i1p1f1, grid: gr, start_year: 2005,  end_year: 2024}
+ - {dataset: MIROC6, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2034,  end_year: 2053}
+ - {dataset: MIROC-ES2L, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gn, start_year: 2030,  end_year: 2049}
+ - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2025,  end_year: 2044}
+ - {dataset: MPI-ESM1-2-LR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2026,  end_year: 2045}
+ - {dataset: MRI-ESM2-0, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2022,  end_year: 2041}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: [historical, ssp370],  ensemble: r1i1p1f2, grid: gn, start_year: 2013,  end_year: 2032}
+ - {dataset: FGOALS-g3, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2018,  end_year: 2037}
+ - {dataset: GFDL-ESM4, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr1, start_year: 2032,  end_year: 2051}
+ - {dataset: NorESM2-LM, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2042,  end_year: 2061}
+ - {dataset: NorESM2-MM, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2037,  end_year: 2056}
+ - {dataset: EC-Earth3-AerChem, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2023,  end_year: 2042}
+
+CMIP6_ssp370_20: &cmip6_ssp370_20
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2030,  end_year: 2049}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2039,  end_year: 2058}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2028,  end_year: 2047}
+ - {dataset: BCC-CSM2-MR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2037,  end_year: 2056}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: [historical, ssp370],  ensemble: r1i1p1f1, grid: gn, start_year: 2014,  end_year: 2033}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gr, start_year: 2036,  end_year: 2055}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gr, start_year: 2043,  end_year: 2062}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2029,  end_year: 2048}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2023,  end_year: 2042}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2036,  end_year: 2055}
+ - {dataset: INM-CM4-8, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr1, start_year: 2043,  end_year: 2062}
+ - {dataset: INM-CM5-0, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr1, start_year: 2041,  end_year: 2060}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2025,  end_year: 2044}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2015,  end_year: 2034}
+ - {dataset: MIROC6, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2050,  end_year: 2069}
+ - {dataset: MIROC-ES2L, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gn, start_year: 2046,  end_year: 2065}
+ - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2041,  end_year: 2060}
+ - {dataset: MPI-ESM1-2-LR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2043,  end_year: 2062}
+ - {dataset: MRI-ESM2-0, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2036,  end_year: 2055}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gn, start_year: 2022,  end_year: 2041}
+ - {dataset: FGOALS-g3, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2037,  end_year: 2056}
+ - {dataset: GFDL-ESM4, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr1, start_year: 2048,  end_year: 2067}
+ - {dataset: NorESM2-LM, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2060,  end_year: 2079}
+ - {dataset: NorESM2-MM, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2053,  end_year: 2072}
+ - {dataset: EC-Earth3-AerChem, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2038,  end_year: 2057}
+
+CMIP6_ssp370_30: &cmip6_ssp370_30
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2053,  end_year: 2072}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2060,  end_year: 2079}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2055,  end_year: 2074}
+ - {dataset: BCC-CSM2-MR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2065,  end_year: 2084}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2034,  end_year: 2053}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gr, start_year: 2057,  end_year: 2076}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gr, start_year: 2063,  end_year: 2082}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2054,  end_year: 2073}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2048,  end_year: 2067}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2057,  end_year: 2076}
+ - {dataset: INM-CM4-8, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr1, start_year: 2074,  end_year: 2093}
+ - {dataset: INM-CM5-0, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr1, start_year: 2075,  end_year: 2094}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2046,  end_year: 2065}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2037,  end_year: 2056}
+ - {dataset: MIROC-ES2L, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gn, start_year: 2075,  end_year: 2094}
+ - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2072,  end_year: 2091}
+ - {dataset: MPI-ESM1-2-LR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2069,  end_year: 2088}
+ - {dataset: MRI-ESM2-0, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2064,  end_year: 2083}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gn, start_year: 2041,  end_year: 2060}
+ - {dataset: FGOALS-g3, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2075,  end_year: 2094}
+ - {dataset: GFDL-ESM4, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr1, start_year: 2074,  end_year: 2093}
+ - {dataset: NorESM2-MM, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2081,  end_year: 2100}
+ - {dataset: EC-Earth3-AerChem, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2057,  end_year: 2076}
+
+CMIP6_ssp370_40: &cmip6_ssp370_40
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2073,  end_year: 2092}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2050,  end_year: 2069}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gr, start_year: 2074,  end_year: 2093}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gr, start_year: 2080,  end_year: 2099}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2075,  end_year: 2094}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2067,  end_year: 2086}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2078,  end_year: 2097}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2067,  end_year: 2086}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2063,  end_year: 2082}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f2, grid: gn, start_year: 2060,  end_year: 2079}
+ - {dataset: EC-Earth3-AerChem, project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gr, start_year: 2074,  end_year: 2093}
+
+CMIP6_ssp585_15: &cmip6_ssp585_15
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2016,  end_year: 2035}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2018,  end_year: 2037}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f1, grid: gn, start_year: 2010,  end_year: 2029}
+ - {dataset: BCC-CSM2-MR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2021,  end_year: 2040}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f1, grid: gn, start_year: 2003,  end_year: 2022}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gr, start_year: 2019,  end_year: 2038}
+ - {dataset: CNRM-CM6-1-HR, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f2, grid: gr, start_year: 2009,  end_year: 2028}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gr, start_year: 2023,  end_year: 2042}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2015,  end_year: 2034}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f1, grid: gr, start_year: 2002,  end_year: 2021}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2019,  end_year: 2038}
+ - {dataset: HadGEM3-GC31-LL, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f3, grid: gn, start_year: 2011,  end_year: 2030}
+ - {dataset: HadGEM3-GC31-MM, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f3, grid: gn, start_year: 2016,  end_year: 2035}
+ - {dataset: INM-CM4-8, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr1, start_year: 2021,  end_year: 2040}
+ - {dataset: INM-CM5-0, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr1, start_year: 2021,  end_year: 2040}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f1, grid: gr, start_year: 2009,  end_year: 2028}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f1, grid: gr, start_year: 2005,  end_year: 2024}
+ - {dataset: MIROC6, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2031,  end_year: 2050}
+ - {dataset: MIROC-ES2L, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gn, start_year: 2025,  end_year: 2044}
+ - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2024,  end_year: 2043}
+ - {dataset: MPI-ESM1-2-LR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2025,  end_year: 2044}
+ - {dataset: MRI-ESM2-0, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2017,  end_year: 2036}
+ - {dataset: NESM3, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f1, grid: gn, start_year: 2011,  end_year: 2030}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f2, grid: gn, start_year: 2014,  end_year: 2033}
+ - {dataset: EC-Earth3-CC, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f1, grid: gr, start_year: 1998,  end_year: 2017}
+ - {dataset: FGOALS-g3, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2020,  end_year: 2039}
+ - {dataset: GFDL-ESM4, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr1, start_year: 2030,  end_year: 2049}
+ - {dataset: NorESM2-LM, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2033,  end_year: 2052}
+ - {dataset: NorESM2-MM, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2030,  end_year: 2049}
+
+CMIP6_ssp585_20: &cmip6_ssp585_20
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2029,  end_year: 2048}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2030,  end_year: 2049}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2027,  end_year: 2046}
+ - {dataset: BCC-CSM2-MR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2034,  end_year: 2053}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f1, grid: gn, start_year: 2013,  end_year: 2032}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gr, start_year: 2031,  end_year: 2050}
+ - {dataset: CNRM-CM6-1-HR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gr, start_year: 2020,  end_year: 2039}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gr, start_year: 2036,  end_year: 2055}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2026,  end_year: 2045}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2018,  end_year: 2037}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2032,  end_year: 2051}
+ - {dataset: HadGEM3-GC31-LL, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f3, grid: gn, start_year: 2021,  end_year: 2040}
+ - {dataset: HadGEM3-GC31-MM, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f3, grid: gn, start_year: 2025,  end_year: 2044}
+ - {dataset: INM-CM4-8, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr1, start_year: 2037,  end_year: 2056}
+ - {dataset: INM-CM5-0, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr1, start_year: 2037,  end_year: 2056}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2025,  end_year: 2044}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: [historical, ssp585],  ensemble: r1i1p1f1, grid: gr, start_year: 2014,  end_year: 2033}
+ - {dataset: MIROC6, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2044,  end_year: 2063}
+ - {dataset: MIROC-ES2L, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gn, start_year: 2038,  end_year: 2057}
+ - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2040,  end_year: 2059}
+ - {dataset: MPI-ESM1-2-LR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2039,  end_year: 2058}
+ - {dataset: MRI-ESM2-0, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2029,  end_year: 2048}
+ - {dataset: NESM3, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2024,  end_year: 2043}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gn, start_year: 2022,  end_year: 2041}
+ - {dataset: EC-Earth3-CC, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2027,  end_year: 2046}
+ - {dataset: FGOALS-g3, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2038,  end_year: 2057}
+ - {dataset: GFDL-ESM4, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr1, start_year: 2043,  end_year: 2062}
+ - {dataset: NorESM2-LM, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2047,  end_year: 2066}
+ - {dataset: NorESM2-MM, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2045,  end_year: 2064}
+
+CMIP6_ssp585_30: &cmip6_ssp585_30
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2046,  end_year: 2065}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2051,  end_year: 2070}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2050,  end_year: 2069}
+ - {dataset: BCC-CSM2-MR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2056,  end_year: 2075}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2031,  end_year: 2050}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gr, start_year: 2049,  end_year: 2068}
+ - {dataset: CNRM-CM6-1-HR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gr, start_year: 2042,  end_year: 2061}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gr, start_year: 2055,  end_year: 2074}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2048,  end_year: 2067}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2041,  end_year: 2060}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2052,  end_year: 2071}
+ - {dataset: HadGEM3-GC31-LL, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f3, grid: gn, start_year: 2038,  end_year: 2057}
+ - {dataset: HadGEM3-GC31-MM, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f3, grid: gn, start_year: 2040,  end_year: 2059}
+ - {dataset: INM-CM4-8, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr1, start_year: 2060,  end_year: 2079}
+ - {dataset: INM-CM5-0, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr1, start_year: 2065,  end_year: 2084}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2041,  end_year: 2060}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2034,  end_year: 2053}
+ - {dataset: MIROC6, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2067,  end_year: 2086}
+ - {dataset: MIROC-ES2L, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gn, start_year: 2061,  end_year: 2080}
+ - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2064,  end_year: 2083}
+ - {dataset: MPI-ESM1-2-LR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2062,  end_year: 2081}
+ - {dataset: MRI-ESM2-0, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2055,  end_year: 2074}
+ - {dataset: NESM3, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2045,  end_year: 2064}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gn, start_year: 2037,  end_year: 2056}
+ - {dataset: EC-Earth3-CC, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2047,  end_year: 2066}
+ - {dataset: FGOALS-g3, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2065,  end_year: 2084}
+ - {dataset: GFDL-ESM4, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr1, start_year: 2066,  end_year: 2085}
+ - {dataset: NorESM2-LM, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2068,  end_year: 2087}
+ - {dataset: NorESM2-MM, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2067,  end_year: 2086}
+
+CMIP6_ssp585_40: &cmip6_ssp585_40
+ - {dataset: ACCESS-CM2, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2062,  end_year: 2081}
+ - {dataset: ACCESS-ESM1-5, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2069,  end_year: 2088}
+ - {dataset: AWI-CM-1-1-MR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2070,  end_year: 2089}
+ - {dataset: CanESM5, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2045,  end_year: 2064}
+ - {dataset: CNRM-CM6-1, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gr, start_year: 2063,  end_year: 2082}
+ - {dataset: CNRM-CM6-1-HR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gr, start_year: 2057,  end_year: 2076}
+ - {dataset: CNRM-ESM2-1, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gr, start_year: 2070,  end_year: 2089}
+ - {dataset: EC-Earth3, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2064,  end_year: 2083}
+ - {dataset: EC-Earth3-Veg, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2058,  end_year: 2077}
+ - {dataset: EC-Earth3-Veg-LR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2066,  end_year: 2085}
+ - {dataset: HadGEM3-GC31-LL, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f3, grid: gn, start_year: 2054,  end_year: 2073}
+ - {dataset: HadGEM3-GC31-MM, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f3, grid: gn, start_year: 2055,  end_year: 2074}
+ - {dataset: IPSL-CM6A-LR, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2057,  end_year: 2076}
+ - {dataset: KACE-1-0-G, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2053,  end_year: 2072}
+ - {dataset: MRI-ESM2-0, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2074,  end_year: 2093}
+ - {dataset: NESM3, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2063,  end_year: 2082}
+ - {dataset: UKESM1-0-LL, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f2, grid: gn, start_year: 2051,  end_year: 2070}
+ - {dataset: EC-Earth3-CC, project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gr, start_year: 2062,  end_year: 2081}
+
+
+preprocessors:
+  extract_ARP:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_ARP.shp
+      method: contains    
+
+  extract_CAF:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_CAF.shp
+      method: contains    
+
+  extract_CAR:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_CAR.shp
+      method: contains    
+
+  extract_CAU:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_CAU.shp
+      method: contains    
+
+  extract_CNA:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_CNA.shp
+      method: contains    
+
+  extract_EAN:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_EAN.shp
+      method: contains    
+
+  extract_EAS:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_EAS.shp
+      method: contains    
+
+  extract_EAU:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_EAU.shp
+      method: contains    
+
+  extract_ECA:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_ECA.shp
+      method: contains    
+
+  extract_EEU:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_EEU.shp
+      method: contains    
+
+  extract_ENA:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_ENA.shp
+      method: contains    
+
+  extract_ESAF:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_ESAF.shp
+      method: contains    
+
+  extract_ESB:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_ESB.shp
+      method: contains    
+
+  extract_GIC:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_GIC.shp
+      method: contains    
+
+  extract_MDG:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_MDG.shp
+      method: contains    
+
+  extract_MED:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_MED.shp
+      method: contains    
+
+  extract_NAU:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_NAU.shp
+      method: contains    
+
+  extract_NCA:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_NCA.shp
+      method: contains    
+
+  extract_NEAF:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_NEAF.shp
+      method: contains    
+
+  extract_NEN:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_NEN.shp
+      method: contains    
+
+  extract_NES:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_NES.shp
+      method: contains    
+
+  extract_NEU:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_NEU.shp
+      method: contains    
+
+  extract_NSA:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_NSA.shp
+      method: contains    
+
+  extract_NWN:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_NWN.shp
+      method: contains    
+
+  extract_NWS:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_NWS.shp
+      method: contains    
+
+  extract_NZ:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_NZ.shp
+      method: contains    
+
+  extract_RAR:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_RAR.shp
+      method: contains    
+
+  extract_RFE:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_RFE.shp
+      method: contains    
+
+  extract_SAH:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_SAH.shp
+      method: contains    
+
+  extract_SAM:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_SAM.shp
+      method: contains    
+
+  extract_SAS:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_SAS.shp
+      method: contains    
+
+  extract_SAU:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_SAU.shp
+      method: contains    
+
+  extract_SCA:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_SCA.shp
+      method: contains    
+
+  extract_SEA:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_SEA.shp
+      method: contains    
+
+  extract_SEAF:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_SEAF.shp
+      method: contains    
+
+  extract_SES:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_SES.shp
+      method: contains    
+
+  extract_SSA:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_SSA.shp
+      method: contains    
+
+  extract_SWS:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_SWS.shp
+      method: contains    
+
+  extract_TIB:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_TIB.shp
+      method: contains    
+
+  extract_WAF:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_WAF.shp
+      method: contains    
+
+  extract_WAN:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_WAN.shp
+      method: contains    
+
+  extract_WCA:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_WCA.shp
+      method: contains    
+
+  extract_WCE:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_WCE.shp
+      method: contains    
+
+  extract_WNA:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_WNA.shp
+      method: contains    
+
+  extract_WSAF:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_WSAF.shp
+      method: contains    
+
+  extract_WSB:   
+    convert_units:
+      units: degC
+    extract_shape:
+      shapefile: sep/Acronym_WSB.shp
+      method: contains    
+
+
+diagnostics:
+  extract_ARP_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ARP 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_CAF_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAF 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_CAR_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAR 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_CAU_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CAU 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_CNA_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_CNA 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_EAN_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAN 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_EAS_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAS 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_EAU_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EAU 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_ECA_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ECA 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_EEU_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_EEU 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_ENA_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ENA 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_ESAF_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESAF 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_ESB_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_ESB 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_GIC_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_GIC 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_MDG_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MDG 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_MED_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_MED 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_NAU_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NAU 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_NCA_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NCA 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_NEAF_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEAF 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_NEN_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEN 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_NES_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NES 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_NEU_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NEU 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_NSA_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NSA 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_NWN_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWN 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_NWS_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NWS 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_NZ_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_NZ 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_RAR_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RAR 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_RFE_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_RFE 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_SAH_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAH 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_SAM_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAM 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_SAS_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAS 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_SAU_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SAU 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_SCA_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SCA 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_SEA_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEA 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_SEAF_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SEAF 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_SES_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SES 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_SSA_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SSA 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_SWS_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_SWS 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_TIB_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_TIB 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_WAF_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAF 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_WAN_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WAN 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_WCA_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCA 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_WCE_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WCE 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_WNA_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WNA 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_WSAF_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSAF 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: null
+
+  extract_WSB_region:
+    variables:
+      cmip6_historical:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_historical
+      cmip6_ssp126_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp126_15
+      cmip6_ssp126_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp126_20
+      cmip6_ssp245_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp245_15
+      cmip6_ssp245_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp245_20
+      cmip6_ssp245_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp245_30
+      cmip6_ssp245_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp245_40
+      cmip6_ssp370_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp370_15
+      cmip6_ssp370_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp370_20
+      cmip6_ssp370_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp370_30
+      cmip6_ssp370_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp370_40
+      cmip6_ssp585_15:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp585_15
+      cmip6_ssp585_20:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp585_20
+      cmip6_ssp585_30:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp585_30
+      cmip6_ssp585_40:
+        short_name: tasmax
+        mip: day
+        preprocessor: extract_WSB 
+        additional_datasets: *cmip6_ssp585_40
+    scripts: 
+        gmm_analysis: 
+            script: gmm/gmm_analysis.py
+            gwl: [1.5, 2.0, 3.0, 4.0]
+            ssp: [ssp126, ssp245, ssp370, ssp585]
+            ancestors: [extract_ARP_region/cmip6_historical, extract_ARP_region/cmip6_ssp126_15, extract_ARP_region/cmip6_ssp126_20, extract_ARP_region/cmip6_ssp245_15, extract_ARP_region/cmip6_ssp245_20, extract_ARP_region/cmip6_ssp245_30, extract_ARP_region/cmip6_ssp245_40, extract_ARP_region/cmip6_ssp370_15, extract_ARP_region/cmip6_ssp370_20, extract_ARP_region/cmip6_ssp370_30, extract_ARP_region/cmip6_ssp370_40, extract_ARP_region/cmip6_ssp585_15, extract_ARP_region/cmip6_ssp585_20, extract_ARP_region/cmip6_ssp585_30, extract_ARP_region/cmip6_ssp585_40, extract_CAF_region/cmip6_historical, extract_CAF_region/cmip6_ssp126_15, extract_CAF_region/cmip6_ssp126_20, extract_CAF_region/cmip6_ssp245_15, extract_CAF_region/cmip6_ssp245_20, extract_CAF_region/cmip6_ssp245_30, extract_CAF_region/cmip6_ssp245_40, extract_CAF_region/cmip6_ssp370_15, extract_CAF_region/cmip6_ssp370_20, extract_CAF_region/cmip6_ssp370_30, extract_CAF_region/cmip6_ssp370_40, extract_CAF_region/cmip6_ssp585_15, extract_CAF_region/cmip6_ssp585_20, extract_CAF_region/cmip6_ssp585_30, extract_CAF_region/cmip6_ssp585_40, extract_CAR_region/cmip6_historical, extract_CAR_region/cmip6_ssp126_15, extract_CAR_region/cmip6_ssp126_20, extract_CAR_region/cmip6_ssp245_15, extract_CAR_region/cmip6_ssp245_20, extract_CAR_region/cmip6_ssp245_30, extract_CAR_region/cmip6_ssp245_40, extract_CAR_region/cmip6_ssp370_15, extract_CAR_region/cmip6_ssp370_20, extract_CAR_region/cmip6_ssp370_30, extract_CAR_region/cmip6_ssp370_40, extract_CAR_region/cmip6_ssp585_15, extract_CAR_region/cmip6_ssp585_20, extract_CAR_region/cmip6_ssp585_30, extract_CAR_region/cmip6_ssp585_40, extract_CAU_region/cmip6_historical, extract_CAU_region/cmip6_ssp126_15, extract_CAU_region/cmip6_ssp126_20, extract_CAU_region/cmip6_ssp245_15, extract_CAU_region/cmip6_ssp245_20, extract_CAU_region/cmip6_ssp245_30, extract_CAU_region/cmip6_ssp245_40, extract_CAU_region/cmip6_ssp370_15, extract_CAU_region/cmip6_ssp370_20, extract_CAU_region/cmip6_ssp370_30, extract_CAU_region/cmip6_ssp370_40, extract_CAU_region/cmip6_ssp585_15, extract_CAU_region/cmip6_ssp585_20, extract_CAU_region/cmip6_ssp585_30, extract_CAU_region/cmip6_ssp585_40, extract_CNA_region/cmip6_historical, extract_CNA_region/cmip6_ssp126_15, extract_CNA_region/cmip6_ssp126_20, extract_CNA_region/cmip6_ssp245_15, extract_CNA_region/cmip6_ssp245_20, extract_CNA_region/cmip6_ssp245_30, extract_CNA_region/cmip6_ssp245_40, extract_CNA_region/cmip6_ssp370_15, extract_CNA_region/cmip6_ssp370_20, extract_CNA_region/cmip6_ssp370_30, extract_CNA_region/cmip6_ssp370_40, extract_CNA_region/cmip6_ssp585_15, extract_CNA_region/cmip6_ssp585_20, extract_CNA_region/cmip6_ssp585_30, extract_CNA_region/cmip6_ssp585_40, extract_EAN_region/cmip6_historical, extract_EAN_region/cmip6_ssp126_15, extract_EAN_region/cmip6_ssp126_20, extract_EAN_region/cmip6_ssp245_15, extract_EAN_region/cmip6_ssp245_20, extract_EAN_region/cmip6_ssp245_30, extract_EAN_region/cmip6_ssp245_40, extract_EAN_region/cmip6_ssp370_15, extract_EAN_region/cmip6_ssp370_20, extract_EAN_region/cmip6_ssp370_30, extract_EAN_region/cmip6_ssp370_40, extract_EAN_region/cmip6_ssp585_15, extract_EAN_region/cmip6_ssp585_20, extract_EAN_region/cmip6_ssp585_30, extract_EAN_region/cmip6_ssp585_40, extract_EAS_region/cmip6_historical, extract_EAS_region/cmip6_ssp126_15, extract_EAS_region/cmip6_ssp126_20, extract_EAS_region/cmip6_ssp245_15, extract_EAS_region/cmip6_ssp245_20, extract_EAS_region/cmip6_ssp245_30, extract_EAS_region/cmip6_ssp245_40, extract_EAS_region/cmip6_ssp370_15, extract_EAS_region/cmip6_ssp370_20, extract_EAS_region/cmip6_ssp370_30, extract_EAS_region/cmip6_ssp370_40, extract_EAS_region/cmip6_ssp585_15, extract_EAS_region/cmip6_ssp585_20, extract_EAS_region/cmip6_ssp585_30, extract_EAS_region/cmip6_ssp585_40, extract_EAU_region/cmip6_historical, extract_EAU_region/cmip6_ssp126_15, extract_EAU_region/cmip6_ssp126_20, extract_EAU_region/cmip6_ssp245_15, extract_EAU_region/cmip6_ssp245_20, extract_EAU_region/cmip6_ssp245_30, extract_EAU_region/cmip6_ssp245_40, extract_EAU_region/cmip6_ssp370_15, extract_EAU_region/cmip6_ssp370_20, extract_EAU_region/cmip6_ssp370_30, extract_EAU_region/cmip6_ssp370_40, extract_EAU_region/cmip6_ssp585_15, extract_EAU_region/cmip6_ssp585_20, extract_EAU_region/cmip6_ssp585_30, extract_EAU_region/cmip6_ssp585_40, extract_ECA_region/cmip6_historical, extract_ECA_region/cmip6_ssp126_15, extract_ECA_region/cmip6_ssp126_20, extract_ECA_region/cmip6_ssp245_15, extract_ECA_region/cmip6_ssp245_20, extract_ECA_region/cmip6_ssp245_30, extract_ECA_region/cmip6_ssp245_40, extract_ECA_region/cmip6_ssp370_15, extract_ECA_region/cmip6_ssp370_20, extract_ECA_region/cmip6_ssp370_30, extract_ECA_region/cmip6_ssp370_40, extract_ECA_region/cmip6_ssp585_15, extract_ECA_region/cmip6_ssp585_20, extract_ECA_region/cmip6_ssp585_30, extract_ECA_region/cmip6_ssp585_40, extract_EEU_region/cmip6_historical, extract_EEU_region/cmip6_ssp126_15, extract_EEU_region/cmip6_ssp126_20, extract_EEU_region/cmip6_ssp245_15, extract_EEU_region/cmip6_ssp245_20, extract_EEU_region/cmip6_ssp245_30, extract_EEU_region/cmip6_ssp245_40, extract_EEU_region/cmip6_ssp370_15, extract_EEU_region/cmip6_ssp370_20, extract_EEU_region/cmip6_ssp370_30, extract_EEU_region/cmip6_ssp370_40, extract_EEU_region/cmip6_ssp585_15, extract_EEU_region/cmip6_ssp585_20, extract_EEU_region/cmip6_ssp585_30, extract_EEU_region/cmip6_ssp585_40, extract_ENA_region/cmip6_historical, extract_ENA_region/cmip6_ssp126_15, extract_ENA_region/cmip6_ssp126_20, extract_ENA_region/cmip6_ssp245_15, extract_ENA_region/cmip6_ssp245_20, extract_ENA_region/cmip6_ssp245_30, extract_ENA_region/cmip6_ssp245_40, extract_ENA_region/cmip6_ssp370_15, extract_ENA_region/cmip6_ssp370_20, extract_ENA_region/cmip6_ssp370_30, extract_ENA_region/cmip6_ssp370_40, extract_ENA_region/cmip6_ssp585_15, extract_ENA_region/cmip6_ssp585_20, extract_ENA_region/cmip6_ssp585_30, extract_ENA_region/cmip6_ssp585_40, extract_ESAF_region/cmip6_historical, extract_ESAF_region/cmip6_ssp126_15, extract_ESAF_region/cmip6_ssp126_20, extract_ESAF_region/cmip6_ssp245_15, extract_ESAF_region/cmip6_ssp245_20, extract_ESAF_region/cmip6_ssp245_30, extract_ESAF_region/cmip6_ssp245_40, extract_ESAF_region/cmip6_ssp370_15, extract_ESAF_region/cmip6_ssp370_20, extract_ESAF_region/cmip6_ssp370_30, extract_ESAF_region/cmip6_ssp370_40, extract_ESAF_region/cmip6_ssp585_15, extract_ESAF_region/cmip6_ssp585_20, extract_ESAF_region/cmip6_ssp585_30, extract_ESAF_region/cmip6_ssp585_40, extract_ESB_region/cmip6_historical, extract_ESB_region/cmip6_ssp126_15, extract_ESB_region/cmip6_ssp126_20, extract_ESB_region/cmip6_ssp245_15, extract_ESB_region/cmip6_ssp245_20, extract_ESB_region/cmip6_ssp245_30, extract_ESB_region/cmip6_ssp245_40, extract_ESB_region/cmip6_ssp370_15, extract_ESB_region/cmip6_ssp370_20, extract_ESB_region/cmip6_ssp370_30, extract_ESB_region/cmip6_ssp370_40, extract_ESB_region/cmip6_ssp585_15, extract_ESB_region/cmip6_ssp585_20, extract_ESB_region/cmip6_ssp585_30, extract_ESB_region/cmip6_ssp585_40, extract_GIC_region/cmip6_historical, extract_GIC_region/cmip6_ssp126_15, extract_GIC_region/cmip6_ssp126_20, extract_GIC_region/cmip6_ssp245_15, extract_GIC_region/cmip6_ssp245_20, extract_GIC_region/cmip6_ssp245_30, extract_GIC_region/cmip6_ssp245_40, extract_GIC_region/cmip6_ssp370_15, extract_GIC_region/cmip6_ssp370_20, extract_GIC_region/cmip6_ssp370_30, extract_GIC_region/cmip6_ssp370_40, extract_GIC_region/cmip6_ssp585_15, extract_GIC_region/cmip6_ssp585_20, extract_GIC_region/cmip6_ssp585_30, extract_GIC_region/cmip6_ssp585_40, extract_MDG_region/cmip6_historical, extract_MDG_region/cmip6_ssp126_15, extract_MDG_region/cmip6_ssp126_20, extract_MDG_region/cmip6_ssp245_15, extract_MDG_region/cmip6_ssp245_20, extract_MDG_region/cmip6_ssp245_30, extract_MDG_region/cmip6_ssp245_40, extract_MDG_region/cmip6_ssp370_15, extract_MDG_region/cmip6_ssp370_20, extract_MDG_region/cmip6_ssp370_30, extract_MDG_region/cmip6_ssp370_40, extract_MDG_region/cmip6_ssp585_15, extract_MDG_region/cmip6_ssp585_20, extract_MDG_region/cmip6_ssp585_30, extract_MDG_region/cmip6_ssp585_40, extract_MED_region/cmip6_historical, extract_MED_region/cmip6_ssp126_15, extract_MED_region/cmip6_ssp126_20, extract_MED_region/cmip6_ssp245_15, extract_MED_region/cmip6_ssp245_20, extract_MED_region/cmip6_ssp245_30, extract_MED_region/cmip6_ssp245_40, extract_MED_region/cmip6_ssp370_15, extract_MED_region/cmip6_ssp370_20, extract_MED_region/cmip6_ssp370_30, extract_MED_region/cmip6_ssp370_40, extract_MED_region/cmip6_ssp585_15, extract_MED_region/cmip6_ssp585_20, extract_MED_region/cmip6_ssp585_30, extract_MED_region/cmip6_ssp585_40, extract_NAU_region/cmip6_historical, extract_NAU_region/cmip6_ssp126_15, extract_NAU_region/cmip6_ssp126_20, extract_NAU_region/cmip6_ssp245_15, extract_NAU_region/cmip6_ssp245_20, extract_NAU_region/cmip6_ssp245_30, extract_NAU_region/cmip6_ssp245_40, extract_NAU_region/cmip6_ssp370_15, extract_NAU_region/cmip6_ssp370_20, extract_NAU_region/cmip6_ssp370_30, extract_NAU_region/cmip6_ssp370_40, extract_NAU_region/cmip6_ssp585_15, extract_NAU_region/cmip6_ssp585_20, extract_NAU_region/cmip6_ssp585_30, extract_NAU_region/cmip6_ssp585_40, extract_NCA_region/cmip6_historical, extract_NCA_region/cmip6_ssp126_15, extract_NCA_region/cmip6_ssp126_20, extract_NCA_region/cmip6_ssp245_15, extract_NCA_region/cmip6_ssp245_20, extract_NCA_region/cmip6_ssp245_30, extract_NCA_region/cmip6_ssp245_40, extract_NCA_region/cmip6_ssp370_15, extract_NCA_region/cmip6_ssp370_20, extract_NCA_region/cmip6_ssp370_30, extract_NCA_region/cmip6_ssp370_40, extract_NCA_region/cmip6_ssp585_15, extract_NCA_region/cmip6_ssp585_20, extract_NCA_region/cmip6_ssp585_30, extract_NCA_region/cmip6_ssp585_40, extract_NEAF_region/cmip6_historical, extract_NEAF_region/cmip6_ssp126_15, extract_NEAF_region/cmip6_ssp126_20, extract_NEAF_region/cmip6_ssp245_15, extract_NEAF_region/cmip6_ssp245_20, extract_NEAF_region/cmip6_ssp245_30, extract_NEAF_region/cmip6_ssp245_40, extract_NEAF_region/cmip6_ssp370_15, extract_NEAF_region/cmip6_ssp370_20, extract_NEAF_region/cmip6_ssp370_30, extract_NEAF_region/cmip6_ssp370_40, extract_NEAF_region/cmip6_ssp585_15, extract_NEAF_region/cmip6_ssp585_20, extract_NEAF_region/cmip6_ssp585_30, extract_NEAF_region/cmip6_ssp585_40, extract_NEN_region/cmip6_historical, extract_NEN_region/cmip6_ssp126_15, extract_NEN_region/cmip6_ssp126_20, extract_NEN_region/cmip6_ssp245_15, extract_NEN_region/cmip6_ssp245_20, extract_NEN_region/cmip6_ssp245_30, extract_NEN_region/cmip6_ssp245_40, extract_NEN_region/cmip6_ssp370_15, extract_NEN_region/cmip6_ssp370_20, extract_NEN_region/cmip6_ssp370_30, extract_NEN_region/cmip6_ssp370_40, extract_NEN_region/cmip6_ssp585_15, extract_NEN_region/cmip6_ssp585_20, extract_NEN_region/cmip6_ssp585_30, extract_NEN_region/cmip6_ssp585_40, extract_NES_region/cmip6_historical, extract_NES_region/cmip6_ssp126_15, extract_NES_region/cmip6_ssp126_20, extract_NES_region/cmip6_ssp245_15, extract_NES_region/cmip6_ssp245_20, extract_NES_region/cmip6_ssp245_30, extract_NES_region/cmip6_ssp245_40, extract_NES_region/cmip6_ssp370_15, extract_NES_region/cmip6_ssp370_20, extract_NES_region/cmip6_ssp370_30, extract_NES_region/cmip6_ssp370_40, extract_NES_region/cmip6_ssp585_15, extract_NES_region/cmip6_ssp585_20, extract_NES_region/cmip6_ssp585_30, extract_NES_region/cmip6_ssp585_40, extract_NEU_region/cmip6_historical, extract_NEU_region/cmip6_ssp126_15, extract_NEU_region/cmip6_ssp126_20, extract_NEU_region/cmip6_ssp245_15, extract_NEU_region/cmip6_ssp245_20, extract_NEU_region/cmip6_ssp245_30, extract_NEU_region/cmip6_ssp245_40, extract_NEU_region/cmip6_ssp370_15, extract_NEU_region/cmip6_ssp370_20, extract_NEU_region/cmip6_ssp370_30, extract_NEU_region/cmip6_ssp370_40, extract_NEU_region/cmip6_ssp585_15, extract_NEU_region/cmip6_ssp585_20, extract_NEU_region/cmip6_ssp585_30, extract_NEU_region/cmip6_ssp585_40, extract_NSA_region/cmip6_historical, extract_NSA_region/cmip6_ssp126_15, extract_NSA_region/cmip6_ssp126_20, extract_NSA_region/cmip6_ssp245_15, extract_NSA_region/cmip6_ssp245_20, extract_NSA_region/cmip6_ssp245_30, extract_NSA_region/cmip6_ssp245_40, extract_NSA_region/cmip6_ssp370_15, extract_NSA_region/cmip6_ssp370_20, extract_NSA_region/cmip6_ssp370_30, extract_NSA_region/cmip6_ssp370_40, extract_NSA_region/cmip6_ssp585_15, extract_NSA_region/cmip6_ssp585_20, extract_NSA_region/cmip6_ssp585_30, extract_NSA_region/cmip6_ssp585_40, extract_NWN_region/cmip6_historical, extract_NWN_region/cmip6_ssp126_15, extract_NWN_region/cmip6_ssp126_20, extract_NWN_region/cmip6_ssp245_15, extract_NWN_region/cmip6_ssp245_20, extract_NWN_region/cmip6_ssp245_30, extract_NWN_region/cmip6_ssp245_40, extract_NWN_region/cmip6_ssp370_15, extract_NWN_region/cmip6_ssp370_20, extract_NWN_region/cmip6_ssp370_30, extract_NWN_region/cmip6_ssp370_40, extract_NWN_region/cmip6_ssp585_15, extract_NWN_region/cmip6_ssp585_20, extract_NWN_region/cmip6_ssp585_30, extract_NWN_region/cmip6_ssp585_40, extract_NWS_region/cmip6_historical, extract_NWS_region/cmip6_ssp126_15, extract_NWS_region/cmip6_ssp126_20, extract_NWS_region/cmip6_ssp245_15, extract_NWS_region/cmip6_ssp245_20, extract_NWS_region/cmip6_ssp245_30, extract_NWS_region/cmip6_ssp245_40, extract_NWS_region/cmip6_ssp370_15, extract_NWS_region/cmip6_ssp370_20, extract_NWS_region/cmip6_ssp370_30, extract_NWS_region/cmip6_ssp370_40, extract_NWS_region/cmip6_ssp585_15, extract_NWS_region/cmip6_ssp585_20, extract_NWS_region/cmip6_ssp585_30, extract_NWS_region/cmip6_ssp585_40, extract_NZ_region/cmip6_historical, extract_NZ_region/cmip6_ssp126_15, extract_NZ_region/cmip6_ssp126_20, extract_NZ_region/cmip6_ssp245_15, extract_NZ_region/cmip6_ssp245_20, extract_NZ_region/cmip6_ssp245_30, extract_NZ_region/cmip6_ssp245_40, extract_NZ_region/cmip6_ssp370_15, extract_NZ_region/cmip6_ssp370_20, extract_NZ_region/cmip6_ssp370_30, extract_NZ_region/cmip6_ssp370_40, extract_NZ_region/cmip6_ssp585_15, extract_NZ_region/cmip6_ssp585_20, extract_NZ_region/cmip6_ssp585_30, extract_NZ_region/cmip6_ssp585_40, extract_RAR_region/cmip6_historical, extract_RAR_region/cmip6_ssp126_15, extract_RAR_region/cmip6_ssp126_20, extract_RAR_region/cmip6_ssp245_15, extract_RAR_region/cmip6_ssp245_20, extract_RAR_region/cmip6_ssp245_30, extract_RAR_region/cmip6_ssp245_40, extract_RAR_region/cmip6_ssp370_15, extract_RAR_region/cmip6_ssp370_20, extract_RAR_region/cmip6_ssp370_30, extract_RAR_region/cmip6_ssp370_40, extract_RAR_region/cmip6_ssp585_15, extract_RAR_region/cmip6_ssp585_20, extract_RAR_region/cmip6_ssp585_30, extract_RAR_region/cmip6_ssp585_40, extract_RFE_region/cmip6_historical, extract_RFE_region/cmip6_ssp126_15, extract_RFE_region/cmip6_ssp126_20, extract_RFE_region/cmip6_ssp245_15, extract_RFE_region/cmip6_ssp245_20, extract_RFE_region/cmip6_ssp245_30, extract_RFE_region/cmip6_ssp245_40, extract_RFE_region/cmip6_ssp370_15, extract_RFE_region/cmip6_ssp370_20, extract_RFE_region/cmip6_ssp370_30, extract_RFE_region/cmip6_ssp370_40, extract_RFE_region/cmip6_ssp585_15, extract_RFE_region/cmip6_ssp585_20, extract_RFE_region/cmip6_ssp585_30, extract_RFE_region/cmip6_ssp585_40, extract_SAH_region/cmip6_historical, extract_SAH_region/cmip6_ssp126_15, extract_SAH_region/cmip6_ssp126_20, extract_SAH_region/cmip6_ssp245_15, extract_SAH_region/cmip6_ssp245_20, extract_SAH_region/cmip6_ssp245_30, extract_SAH_region/cmip6_ssp245_40, extract_SAH_region/cmip6_ssp370_15, extract_SAH_region/cmip6_ssp370_20, extract_SAH_region/cmip6_ssp370_30, extract_SAH_region/cmip6_ssp370_40, extract_SAH_region/cmip6_ssp585_15, extract_SAH_region/cmip6_ssp585_20, extract_SAH_region/cmip6_ssp585_30, extract_SAH_region/cmip6_ssp585_40, extract_SAM_region/cmip6_historical, extract_SAM_region/cmip6_ssp126_15, extract_SAM_region/cmip6_ssp126_20, extract_SAM_region/cmip6_ssp245_15, extract_SAM_region/cmip6_ssp245_20, extract_SAM_region/cmip6_ssp245_30, extract_SAM_region/cmip6_ssp245_40, extract_SAM_region/cmip6_ssp370_15, extract_SAM_region/cmip6_ssp370_20, extract_SAM_region/cmip6_ssp370_30, extract_SAM_region/cmip6_ssp370_40, extract_SAM_region/cmip6_ssp585_15, extract_SAM_region/cmip6_ssp585_20, extract_SAM_region/cmip6_ssp585_30, extract_SAM_region/cmip6_ssp585_40, extract_SAS_region/cmip6_historical, extract_SAS_region/cmip6_ssp126_15, extract_SAS_region/cmip6_ssp126_20, extract_SAS_region/cmip6_ssp245_15, extract_SAS_region/cmip6_ssp245_20, extract_SAS_region/cmip6_ssp245_30, extract_SAS_region/cmip6_ssp245_40, extract_SAS_region/cmip6_ssp370_15, extract_SAS_region/cmip6_ssp370_20, extract_SAS_region/cmip6_ssp370_30, extract_SAS_region/cmip6_ssp370_40, extract_SAS_region/cmip6_ssp585_15, extract_SAS_region/cmip6_ssp585_20, extract_SAS_region/cmip6_ssp585_30, extract_SAS_region/cmip6_ssp585_40, extract_SAU_region/cmip6_historical, extract_SAU_region/cmip6_ssp126_15, extract_SAU_region/cmip6_ssp126_20, extract_SAU_region/cmip6_ssp245_15, extract_SAU_region/cmip6_ssp245_20, extract_SAU_region/cmip6_ssp245_30, extract_SAU_region/cmip6_ssp245_40, extract_SAU_region/cmip6_ssp370_15, extract_SAU_region/cmip6_ssp370_20, extract_SAU_region/cmip6_ssp370_30, extract_SAU_region/cmip6_ssp370_40, extract_SAU_region/cmip6_ssp585_15, extract_SAU_region/cmip6_ssp585_20, extract_SAU_region/cmip6_ssp585_30, extract_SAU_region/cmip6_ssp585_40, extract_SCA_region/cmip6_historical, extract_SCA_region/cmip6_ssp126_15, extract_SCA_region/cmip6_ssp126_20, extract_SCA_region/cmip6_ssp245_15, extract_SCA_region/cmip6_ssp245_20, extract_SCA_region/cmip6_ssp245_30, extract_SCA_region/cmip6_ssp245_40, extract_SCA_region/cmip6_ssp370_15, extract_SCA_region/cmip6_ssp370_20, extract_SCA_region/cmip6_ssp370_30, extract_SCA_region/cmip6_ssp370_40, extract_SCA_region/cmip6_ssp585_15, extract_SCA_region/cmip6_ssp585_20, extract_SCA_region/cmip6_ssp585_30, extract_SCA_region/cmip6_ssp585_40, extract_SEA_region/cmip6_historical, extract_SEA_region/cmip6_ssp126_15, extract_SEA_region/cmip6_ssp126_20, extract_SEA_region/cmip6_ssp245_15, extract_SEA_region/cmip6_ssp245_20, extract_SEA_region/cmip6_ssp245_30, extract_SEA_region/cmip6_ssp245_40, extract_SEA_region/cmip6_ssp370_15, extract_SEA_region/cmip6_ssp370_20, extract_SEA_region/cmip6_ssp370_30, extract_SEA_region/cmip6_ssp370_40, extract_SEA_region/cmip6_ssp585_15, extract_SEA_region/cmip6_ssp585_20, extract_SEA_region/cmip6_ssp585_30, extract_SEA_region/cmip6_ssp585_40, extract_SEAF_region/cmip6_historical, extract_SEAF_region/cmip6_ssp126_15, extract_SEAF_region/cmip6_ssp126_20, extract_SEAF_region/cmip6_ssp245_15, extract_SEAF_region/cmip6_ssp245_20, extract_SEAF_region/cmip6_ssp245_30, extract_SEAF_region/cmip6_ssp245_40, extract_SEAF_region/cmip6_ssp370_15, extract_SEAF_region/cmip6_ssp370_20, extract_SEAF_region/cmip6_ssp370_30, extract_SEAF_region/cmip6_ssp370_40, extract_SEAF_region/cmip6_ssp585_15, extract_SEAF_region/cmip6_ssp585_20, extract_SEAF_region/cmip6_ssp585_30, extract_SEAF_region/cmip6_ssp585_40, extract_SES_region/cmip6_historical, extract_SES_region/cmip6_ssp126_15, extract_SES_region/cmip6_ssp126_20, extract_SES_region/cmip6_ssp245_15, extract_SES_region/cmip6_ssp245_20, extract_SES_region/cmip6_ssp245_30, extract_SES_region/cmip6_ssp245_40, extract_SES_region/cmip6_ssp370_15, extract_SES_region/cmip6_ssp370_20, extract_SES_region/cmip6_ssp370_30, extract_SES_region/cmip6_ssp370_40, extract_SES_region/cmip6_ssp585_15, extract_SES_region/cmip6_ssp585_20, extract_SES_region/cmip6_ssp585_30, extract_SES_region/cmip6_ssp585_40, extract_SSA_region/cmip6_historical, extract_SSA_region/cmip6_ssp126_15, extract_SSA_region/cmip6_ssp126_20, extract_SSA_region/cmip6_ssp245_15, extract_SSA_region/cmip6_ssp245_20, extract_SSA_region/cmip6_ssp245_30, extract_SSA_region/cmip6_ssp245_40, extract_SSA_region/cmip6_ssp370_15, extract_SSA_region/cmip6_ssp370_20, extract_SSA_region/cmip6_ssp370_30, extract_SSA_region/cmip6_ssp370_40, extract_SSA_region/cmip6_ssp585_15, extract_SSA_region/cmip6_ssp585_20, extract_SSA_region/cmip6_ssp585_30, extract_SSA_region/cmip6_ssp585_40, extract_SWS_region/cmip6_historical, extract_SWS_region/cmip6_ssp126_15, extract_SWS_region/cmip6_ssp126_20, extract_SWS_region/cmip6_ssp245_15, extract_SWS_region/cmip6_ssp245_20, extract_SWS_region/cmip6_ssp245_30, extract_SWS_region/cmip6_ssp245_40, extract_SWS_region/cmip6_ssp370_15, extract_SWS_region/cmip6_ssp370_20, extract_SWS_region/cmip6_ssp370_30, extract_SWS_region/cmip6_ssp370_40, extract_SWS_region/cmip6_ssp585_15, extract_SWS_region/cmip6_ssp585_20, extract_SWS_region/cmip6_ssp585_30, extract_SWS_region/cmip6_ssp585_40, extract_TIB_region/cmip6_historical, extract_TIB_region/cmip6_ssp126_15, extract_TIB_region/cmip6_ssp126_20, extract_TIB_region/cmip6_ssp245_15, extract_TIB_region/cmip6_ssp245_20, extract_TIB_region/cmip6_ssp245_30, extract_TIB_region/cmip6_ssp245_40, extract_TIB_region/cmip6_ssp370_15, extract_TIB_region/cmip6_ssp370_20, extract_TIB_region/cmip6_ssp370_30, extract_TIB_region/cmip6_ssp370_40, extract_TIB_region/cmip6_ssp585_15, extract_TIB_region/cmip6_ssp585_20, extract_TIB_region/cmip6_ssp585_30, extract_TIB_region/cmip6_ssp585_40, extract_WAF_region/cmip6_historical, extract_WAF_region/cmip6_ssp126_15, extract_WAF_region/cmip6_ssp126_20, extract_WAF_region/cmip6_ssp245_15, extract_WAF_region/cmip6_ssp245_20, extract_WAF_region/cmip6_ssp245_30, extract_WAF_region/cmip6_ssp245_40, extract_WAF_region/cmip6_ssp370_15, extract_WAF_region/cmip6_ssp370_20, extract_WAF_region/cmip6_ssp370_30, extract_WAF_region/cmip6_ssp370_40, extract_WAF_region/cmip6_ssp585_15, extract_WAF_region/cmip6_ssp585_20, extract_WAF_region/cmip6_ssp585_30, extract_WAF_region/cmip6_ssp585_40, extract_WAN_region/cmip6_historical, extract_WAN_region/cmip6_ssp126_15, extract_WAN_region/cmip6_ssp126_20, extract_WAN_region/cmip6_ssp245_15, extract_WAN_region/cmip6_ssp245_20, extract_WAN_region/cmip6_ssp245_30, extract_WAN_region/cmip6_ssp245_40, extract_WAN_region/cmip6_ssp370_15, extract_WAN_region/cmip6_ssp370_20, extract_WAN_region/cmip6_ssp370_30, extract_WAN_region/cmip6_ssp370_40, extract_WAN_region/cmip6_ssp585_15, extract_WAN_region/cmip6_ssp585_20, extract_WAN_region/cmip6_ssp585_30, extract_WAN_region/cmip6_ssp585_40, extract_WCA_region/cmip6_historical, extract_WCA_region/cmip6_ssp126_15, extract_WCA_region/cmip6_ssp126_20, extract_WCA_region/cmip6_ssp245_15, extract_WCA_region/cmip6_ssp245_20, extract_WCA_region/cmip6_ssp245_30, extract_WCA_region/cmip6_ssp245_40, extract_WCA_region/cmip6_ssp370_15, extract_WCA_region/cmip6_ssp370_20, extract_WCA_region/cmip6_ssp370_30, extract_WCA_region/cmip6_ssp370_40, extract_WCA_region/cmip6_ssp585_15, extract_WCA_region/cmip6_ssp585_20, extract_WCA_region/cmip6_ssp585_30, extract_WCA_region/cmip6_ssp585_40, extract_WCE_region/cmip6_historical, extract_WCE_region/cmip6_ssp126_15, extract_WCE_region/cmip6_ssp126_20, extract_WCE_region/cmip6_ssp245_15, extract_WCE_region/cmip6_ssp245_20, extract_WCE_region/cmip6_ssp245_30, extract_WCE_region/cmip6_ssp245_40, extract_WCE_region/cmip6_ssp370_15, extract_WCE_region/cmip6_ssp370_20, extract_WCE_region/cmip6_ssp370_30, extract_WCE_region/cmip6_ssp370_40, extract_WCE_region/cmip6_ssp585_15, extract_WCE_region/cmip6_ssp585_20, extract_WCE_region/cmip6_ssp585_30, extract_WCE_region/cmip6_ssp585_40, extract_WNA_region/cmip6_historical, extract_WNA_region/cmip6_ssp126_15, extract_WNA_region/cmip6_ssp126_20, extract_WNA_region/cmip6_ssp245_15, extract_WNA_region/cmip6_ssp245_20, extract_WNA_region/cmip6_ssp245_30, extract_WNA_region/cmip6_ssp245_40, extract_WNA_region/cmip6_ssp370_15, extract_WNA_region/cmip6_ssp370_20, extract_WNA_region/cmip6_ssp370_30, extract_WNA_region/cmip6_ssp370_40, extract_WNA_region/cmip6_ssp585_15, extract_WNA_region/cmip6_ssp585_20, extract_WNA_region/cmip6_ssp585_30, extract_WNA_region/cmip6_ssp585_40, extract_WSAF_region/cmip6_historical, extract_WSAF_region/cmip6_ssp126_15, extract_WSAF_region/cmip6_ssp126_20, extract_WSAF_region/cmip6_ssp245_15, extract_WSAF_region/cmip6_ssp245_20, extract_WSAF_region/cmip6_ssp245_30, extract_WSAF_region/cmip6_ssp245_40, extract_WSAF_region/cmip6_ssp370_15, extract_WSAF_region/cmip6_ssp370_20, extract_WSAF_region/cmip6_ssp370_30, extract_WSAF_region/cmip6_ssp370_40, extract_WSAF_region/cmip6_ssp585_15, extract_WSAF_region/cmip6_ssp585_20, extract_WSAF_region/cmip6_ssp585_30, extract_WSAF_region/cmip6_ssp585_40, extract_WSB_region/cmip6_historical, extract_WSB_region/cmip6_ssp126_15, extract_WSB_region/cmip6_ssp126_20, extract_WSB_region/cmip6_ssp245_15, extract_WSB_region/cmip6_ssp245_20, extract_WSB_region/cmip6_ssp245_30, extract_WSB_region/cmip6_ssp245_40, extract_WSB_region/cmip6_ssp370_15, extract_WSB_region/cmip6_ssp370_20, extract_WSB_region/cmip6_ssp370_30, extract_WSB_region/cmip6_ssp370_40, extract_WSB_region/cmip6_ssp585_15, extract_WSB_region/cmip6_ssp585_20, extract_WSB_region/cmip6_ssp585_30, extract_WSB_region/cmip6_ssp585_40]
