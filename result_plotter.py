@@ -1,4 +1,5 @@
 import os
+import sys
 from os import listdir
 from os.path import isfile, join
 from pathlib import Path
@@ -19,13 +20,14 @@ def _file_collector(filepath):
 
 
 def main():
+    import argparse
 
-    # define paths for input and output
-    # region_files = "/mnt/d/Google Drive/PHD/1st paper/DATA/return_analysis/2022-09-13_13-28-26/"
-    # grid_files = "/mnt/d/Google Drive/PHD/1st paper/DATA/return_analysis/2022-09-13_13-28-26/grid_returns/"
-    
-    region_files = "/mnt/c/Users/paca_ay/Documents/DATA/return_analysis/2022-09-13_13-28-26/"
-    grid_files = "/mnt/c/Users/paca_ay/Documents/DATA/return_analysis/2022-09-13_13-28-26/grid_returns/"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("region_files_path", type=str, help="Input folder path for regional files")
+    args = parser.parse_args()
+
+    region_files = args.region_files_path
+    grid_files = join(region_files, 'grid_returns/')
 
     # create output path
     output_path = join(region_files, 'plots/')

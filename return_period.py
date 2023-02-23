@@ -10,7 +10,7 @@ from joblib import parallel_backend, Parallel, delayed
 from scipy import special as sps
 import datetime as dt
 from collections import defaultdict
-
+import sys
 
 def list_files_in_directory(parent_directory):
     list_of_files = list()
@@ -365,27 +365,34 @@ def _calculate_return_for_grid_cell(data_list):
     return
 
 
-def main(): 
-    # Choose the path for gmm_analysis results
+def main():     
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_path", type=str, help="Input folder path for GMM results")
+    parser.add_argument("output_path", type=str, help="Output folder path for return period analysis")
+    args = parser.parse_args()
+
+    folder_path = args.input_path
+    parent_directory_path = args.output_path
     
     start_time = time.time()
-    folder_path = '/work/bd1083/b309178/gmmDiag_esmvaltool/recipe_gmm_ssp_20220903_113433/plots/extract_WSB_region/gmm_analysis_20220906_191030/'
-    
-    files = list_files_in_directory(folder_path)
-    
+
     # Path for saving output
-    # parent_directory_path = '/mnt/d/Documents/DATA/'
-    parent_directory_path = '/work/bd1083/b309178/gmmDiag_esmvaltool/return_analysis/'
     dt_string = dt.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     output_path = join(parent_directory_path, 'return_analysis', dt_string)
+    print("Input folder:\t{}\nOutput folder:\t{}\n".format(folder_path, output_path))
+    sys.exit()
     
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
+    # Get list of files in folder
+    files = list_files_in_directory(folder_path)
     mp_list = []
     for k, v in files.items():
         mp_list.append([{k: v}, output_path])
-    
+
     n_jobs = 256
     with parallel_backend('loky', n_jobs=n_jobs):
         mp_val = Parallel(verbose=10)(delayed(_calculate_return_for_grid_cell)(i) for i in mp_list)

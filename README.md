@@ -15,7 +15,7 @@ This repository uses Python 3.6. The required packages are listed in `requiremen
 
 CMIP6 datasets are available at [https://esgf-data.dkrz.de/search/cmip6-dkrz/](https://esgf-data.dkrz.de/search/cmip6-dkrz/). Regional grid files are generated using the [recipe](esmvaltool/recipe_gmm_ssp.yml) with [ESMValTool](https://github.com/ESMValGroup/ESMValTool). Shapefiles for IPCC land regions are freely available at the ATLAS GitHub repository: [https://github.com/SantanderMetGroup/ATLAS](https://github.com/SantanderMetGroup/ATLAS) and provided in the `esmvaltool/auxiliary_data/sep/` directory with the recipe.
 
-The GMM algorithm is implemented in the [diagnostic script](esmvaltool/diag_scripts/gmm/gmm_analysis.py) for ESMValTool. This script takes the 'ESMValTool' output as input and produces the GMM results for each region and each model under GWL scenarios. 
+The GMM algorithm is implemented in the [diagnostic script](esmvaltool/diag_scripts/gmm/gmm_analysis.py) for ESMValTool. This script takes the 'ESMValTool' output as input and produces the GMM results for each grid cells and each model. 
 
-
+Return periods for regions under different GWL scenarios are calculated using the [return_priod.py](return_period.py) script. This script takes the GMM results as input and produces the return periods for each region and each model under GWL scenarios.
 
