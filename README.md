@@ -1,6 +1,6 @@
 # Detecting Extreme Events using Gaussian Mixture Models
 
-This repository provides a Python implementation of the Gaussian Mixture Model (GMM) algorithm for detecting extreme events in time series data. The algorithm is described in the following paper:
+This repository provides a Python implementation of the Gaussian Mixture Model (GMM) algorithm for detecting extreme events in time series data. 
 
 > Paçal, A., Hassler, B., Weigel, K., Wehner, M., Kurnaz, M. L., & Eyring, V. (2023). Detecting Extreme Events using Gaussian Mixture Models.
 ------------------------------------------------------------------------
