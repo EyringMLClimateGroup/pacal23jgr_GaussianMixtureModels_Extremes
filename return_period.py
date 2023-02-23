@@ -382,7 +382,6 @@ def main():
     dt_string = dt.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     output_path = join(parent_directory_path, 'return_analysis', dt_string)
     print("Input folder:\t{}\nOutput folder:\t{}\n".format(folder_path, output_path))
-    sys.exit()
     
     if not os.path.exists(output_path):
         os.makedirs(output_path)
