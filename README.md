@@ -19,3 +19,8 @@ The GMM algorithm is implemented in the [diagnostic script](esmvaltool/diag_scri
 
 Return periods for regions under different GWL scenarios are calculated using the [return_priod.py](return_period.py) script. This script takes the GMM results as input and produces the return periods for each region and each model under GWL scenarios.
 
+    return_period.py [-h] [INPUT_PATH] [OUTPUT_PATH]
+
+Figures in the paper can be plotted using the [results_plotter.py](results_plotter.py) script. This script takes the return periods as input and produces the figures in the paper.
+
+    results_plotter.py [-h] [INPUT_PATH]
