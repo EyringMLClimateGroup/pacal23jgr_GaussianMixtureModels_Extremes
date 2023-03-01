@@ -392,6 +392,7 @@ def main():
     for k, v in files.items():
         mp_list.append([{k: v}, output_path])
 
+    # Run analysis in parallel
     n_jobs = 256
     with parallel_backend('loky', n_jobs=n_jobs):
         mp_val = Parallel(verbose=10)(delayed(_calculate_return_for_grid_cell)(i) for i in mp_list)

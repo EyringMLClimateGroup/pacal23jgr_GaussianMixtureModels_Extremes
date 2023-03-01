@@ -12,12 +12,10 @@ from sklearn.mixture import GaussianMixture
 
 
 def unimodality_check(dataset, best_gmm, best_n):
-    clf = best_gmm
-
-    mu1_p = min(clf.means_)[0]
-    mu2_p = max(clf.means_)[0]
+    mu1_p = min(best_gmm.means_)[0]
+    mu2_p = max(best_gmm.means_)[0]
     lhs = abs(mu1_p - mu2_p)
-    rhs = 2 * min([math.sqrt(item) for item in clf.covariances_])
+    rhs = 2 * min([math.sqrt(item) for item in best_gmm.covariances_])
 
     if lhs <= rhs:
         return True
@@ -226,7 +224,6 @@ def grid_gmm_analysis(grid_dictionary):
 def gmm_select_plot(dataset, best_gmm, bic, region_name, model_name, period, output_folder_path):
     import matplotlib.pyplot as plt
     n_components_range = range(1, len(bic) + 1)
-    clf = best_gmm
     bin_number = math.ceil((max(dataset) - min(dataset)) / 1)
 
     # Plot the original data
@@ -237,7 +234,7 @@ def gmm_select_plot(dataset, best_gmm, bic, region_name, model_name, period, out
 
     # Plot predicted histograms
     x_list = []
-    for mean, cov, weight in zip(clf.means_, clf.covariances_, clf.weights_):
+    for mean, cov, weight in zip(best_gmm.means_, best_gmm.covariances_, best_gmm.weights_):
         x_list.append(np.random.normal(mean[0], math.sqrt(cov), size=int(len(dataset) * weight)))
     X = np.concatenate(x_list)
     plt.hist(X, bins=bin_number, density=True, histtype=u'step', label="Predicted histogram")
