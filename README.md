@@ -18,7 +18,7 @@ Return periods for regions under different GWL scenarios are calculated using th
 
     return_period.py [-h] [INPUT_PATH] [OUTPUT_PATH]
 
-Figures in the paper can be plotted using the [result_plotter.py](result_plotter.py) script. This script takes the return periods as input and produces the figures in the paper. [INPUT_PATH] is the path to the directory containing the regional return period files. Files should be named as `{region}.csv`. The script will produce the figures and save them into a new `plot` directory.
+Figures in the paper can be plotted using the [result_plotter.py](result_plotter.py) script. This script takes the return periods as input and produces the figures in the paper. [INPUT_PATH] is the path to the directory containing the regional return period files. Files should be named as `{region}.csv`. The script will produce the figures and save them into a new `plot` directory..
 
     result_plotter.py [-h] [INPUT_PATH]
 
