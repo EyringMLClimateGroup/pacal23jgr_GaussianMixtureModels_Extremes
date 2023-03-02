@@ -12,7 +12,7 @@ The GMM algorithm is implemented in the [diagnostic script](esmvaltool/diag_scri
 
 This repository uses Python 3.8. The required packages are listed in `environment.yaml`. To install the required packages, run the following command:
 
-    mamba env create --fqile environment.yaml
+    mamba env create --file environment.yaml
 
 Return periods for regions under different GWL scenarios are calculated using the [return_period.py](return_period.py) script. This script takes the GMM results from ESMValTool recipe, and produces the return periods for each region and each model under GWL scenarios. `INPUT_PATH` is the path to the ESMValTool output directory, and `OUTPUT_PATH` is the path to save the results.
 
