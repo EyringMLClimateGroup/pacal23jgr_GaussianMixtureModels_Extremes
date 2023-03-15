@@ -24,7 +24,7 @@ Regional grid files are generated using [the recipe](esmvaltool/recipe_gmm_ssp.y
 
 The GMM algorithm is implemented in [the diagnostic script](esmvaltool/diag_scripts/gmm/gmm_analysis.py) for [ESMValTool v2.5.0](https://github.com/ESMValGroup/ESMValTool/releases/tag/v2.5.0). You can use [the ESMValTool tutorial](https://esmvalgroup.github.io/ESMValTool_Tutorial/) to learn how to run a recipe. [The recipe](esmvaltool/recipe_gmm_ssp.yml) can be run using the following command:
 
-        esmvaltool run recipe_gmm_ssp.yml
+    esmvaltool run recipe_gmm_ssp.yml
 
 This script takes the CMIP6 data, applies preprocessing functions, and creates regional output files. Then, the diagnostic script takes the ESMValTool output as input and produces the GMM results for each grid cell and each model.
 
