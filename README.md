@@ -10,7 +10,7 @@ Author: Aytaç Paçal, [aytac.pacal@dlr.de](mailto:aytac.pacal@dlr.de)
 
 ## Installation
 
-To use this implementation of the GMM algorithm, you will need to have Python 3 installed on your system. You can use this repository with [ESMValTool v2.5.0 environment](https://github.com/ESMValGroup/ESMValTool/blob/v2.5.0/environment.yml). Follow the installation steps in [ESMValTool installation](https://docs.esmvaltool.org/en/latest/quickstart/installation.html#mamba-conda-installation) page. 
+To use this implementation of the GMM algorithm, you will need to have Python 3 installed on your system. You can use this repository with [ESMValTool v2.5.0 environment](https://github.com/ESMValGroup/ESMValTool/blob/v2.5.0/environment.yml). Follow the installation steps in the [ESMValTool](https://docs.esmvaltool.org/en/latest/quickstart/installation.html#mamba-conda-installation)[ installation](https://docs.esmvaltool.org/en/latest/quickstart/installation.html#mamba-conda-installation) page. 
 
 
 ## Data
