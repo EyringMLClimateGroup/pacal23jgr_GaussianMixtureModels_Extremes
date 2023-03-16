@@ -6,6 +6,8 @@ This repository provides a Python implementation of the Gaussian Mixture Model (
 
 Author: Aytaç Paçal, [aytac.pacal@dlr.de](mailto:aytac.pacal@dlr.de)
 
+[![DOI](https://zenodo.org/badge/605515016.svg)](https://zenodo.org/badge/latestdoi/605515016)
+
 ------------------------------------------------------------------------
 
 ## Installation
