@@ -10,13 +10,13 @@ Author: Aytaç Paçal, [aytac.pacal@dlr.de](mailto:aytac.pacal@dlr.de)
 
 ## Installation
 
-To use this implementation of the GMM algorithm, you will need to have Python 3 installed on your system. You can use this repository with [ESMValTool v2.5.0 environment](https://github.com/ESMValGroup/ESMValTool/blob/main/environment.yml). Follow the installation steps on the [ESMValTool installation](https://docs.esmvaltool.org/en/latest/quickstart/installation.html#mamba-conda-installation) page. Alternatively, the [environment](environment_v2.5.0.yml) file for the specific ESMValTool version used in this study is provided in this repository. You can create a new environment using this file with the following command:
+To use this implementation of the GMM algorithm, you will need to have Python 3 installed on your system. You can use this repository with [ESMValTool environment](https://github.com/ESMValGroup/ESMValTool/blob/main/environment.yml). Follow the installation steps on the [ESMValTool installation](https://docs.esmvaltool.org/en/latest/quickstart/installation.html#mamba-conda-installation) page. Alternatively, the [environment_v2.5.0.yml](environment_v2.5.0.yml) file for the ESMValTool version(v2.5.0) used in this study is provided in this repository. You can create a new environment using this file with the following command:
 
     mamba env create -f environment_v2.5.0.yml
 
 ## Data
 
-The CMIP6 datasets, which are a collection of climate model simulations produced by research institutions worldwide, are available on the [ESGF](https://esgf-data.dkrz.de/search/cmip6-dkrz/)](https://esgf-data.dkrz.de/search/cmip6-dkrz/) servers.
+The CMIP6 datasets, which are a collection of climate model simulations produced by research institutions worldwide, are available on the [ESGF](https://esgf-data.dkrz.de/search/cmip6-dkrz/) servers.
 
 Regional grid files are generated using [the recipe](esmvaltool/recipe_gmm_ssp.yml) with [ESMValTool](https://github.com/ESMValGroup/ESMValTool), which is a community-driven Python-based evaluation tool for Earth system models. ESMValTool provides a set of predefined recipes for the evaluation of various aspects of Earth system models. Shapefiles for IPCC (Intergovernmental Panel on Climate Change) regions are freely available at the [ATLAS GitHub](https://github.com/SantanderMetGroup/ATLAS) repository. Separate shapefiles for each region should be placed into the [auxiliary_data](esmvaltool/auxiliary_data/) directory of the ESMValTool.
 
