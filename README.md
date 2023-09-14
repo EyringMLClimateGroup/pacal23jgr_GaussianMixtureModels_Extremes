@@ -2,9 +2,9 @@
 
 This repository provides a Python implementation of the Gaussian Mixture Model (GMM) algorithm for detecting extreme events in time series data. 
 
-> Paçal, A., Hassler, B., Weigel, K., Wehner, M., Kurnaz, M. L., & Eyring, V. (2023). Detecting Extreme Events using Gaussian Mixture Models.
+> Paçal, A., Hassler, B., Weigel, K., Kurnaz, M. L., Wehner, M. F., & Eyring, V. (2023). Detecting Extreme Temperature Events Using Gaussian Mixture Models. Journal of Geophysical Research: Atmospheres, 128, e2023JD038906. https://doi.org/10.1029/2023JD038906
 
-Author: Aytaç Paçal, [aytac.pacal@dlr.de](mailto:aytac.pacal@dlr.de)
+Corresponding Author: Aytaç Paçal, [aytac.pacal@dlr.de](mailto:aytac.pacal@dlr.de)
 
 [![DOI](https://zenodo.org/badge/605515016.svg)](https://zenodo.org/badge/latestdoi/605515016)
 
